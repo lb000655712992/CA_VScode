@@ -114,7 +114,7 @@ def UpdateStrategy(token, ID, name, code, options):
 
 def download(token, StrategyList, ID_list, ID):
     try:
-        if ID != "a":
+        if ID != "a" and ID != "A":
             if ID not in ID_list:
                 print("策略ID輸入錯誤")
                 os._exit(0)
@@ -152,7 +152,7 @@ def upload(token, ID):
         name_list = []
         ID_list = []
         folderpath = "trade//"
-        if ID == "a":
+        if ID == "a" or ID == "A":
             for i in os.listdir(folderpath):
                 filename = i.split("_")
                 ID_list.append(filename[0])
@@ -216,9 +216,9 @@ def main():
         ID = args.arg2
     else:
         ID = input("請輸入策略ID(全部請輸入a): ")
-    if method == "d":
+    if method == "d" or method == "D":
         print(download(token, StrategyList, ID_list, ID))
-    elif method == "u":
+    elif method == "u" or method == "U":
         print(upload(token, ID))
     else:
         print("錯誤操作")

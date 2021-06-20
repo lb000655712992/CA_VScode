@@ -188,7 +188,6 @@ def upload(token, ID):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser = argparse.ArgumentParser()
     parser.add_argument("arg1",
                         type=str,
                         nargs='?',

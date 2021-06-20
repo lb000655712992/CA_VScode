@@ -1,5 +1,6 @@
 import requests
 import json
+import argparse
 import os
 
 
@@ -111,10 +112,8 @@ def UpdateStrategy(token, ID, name, code, options):
     return send(payload, token)
 
 
-def download(token, StrategyList, ID_list):
+def download(token, StrategyList, ID_list, ID):
     try:
-        print("-------------------------------------------------")
-        ID = str(input("請輸入下載策略ID(全部請輸入a): "))
         if ID != "a":
             if ID not in ID_list:
                 print("策略ID輸入錯誤")
@@ -148,10 +147,8 @@ def download(token, StrategyList, ID_list):
         return "失敗: " + str(e)
 
 
-def upload(token):
+def upload(token, ID):
     try:
-        print("-------------------------------------------------")
-        ID = input("請輸入上傳策略ID(全部請輸入a): ")
         name_list = []
         ID_list = []
         folderpath = "trade//"
@@ -190,6 +187,17 @@ def upload(token):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("arg1",
+                        type=str,
+                        nargs='?',
+                        help="操作(ex:u):上傳u,下載d")
+    parser.add_argument("arg2",
+                        type=str,
+                        nargs='?',
+                        help="ID(ex:5566):指定id或是a下載全部")
+    args = parser.parse_args()
     if not os.path.isdir("trade"):
         os.makedirs("trade")
     token = login()[0]["data"]["login"]
@@ -201,11 +209,18 @@ def main():
         ID_list.append(StrategyList[0]["data"]["me"]["strategies"][times]["id"])
         print("策略ID:{}, 策略名稱:{} ".format(StrategyList[0]["data"]["me"]["strategies"][times]["id"],StrategyList[0]["data"]["me"]["strategies"][times]["name"]))
     print("-------------------------------------------------")
-    method = input("請輸入操作(上傳u,下載d): ")
+    if args.arg1:
+        method = args.arg1
+    else:
+        method = input("請輸入操作(上傳u,下載d): ")
+    if args.arg2:
+        ID = args.arg2
+    else:
+        ID = input("請輸入策略ID(全部請輸入a): ")
     if method == "d":
-        print(download(token, StrategyList, ID_list))
+        print(download(token, StrategyList, ID_list, ID))
     elif method == "u":
-        print(upload(token))
+        print(upload(token, ID))
     else:
         print("錯誤操作")
     print("-------------------------------------------------")
